@@ -15,9 +15,9 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (myScreen.width - 300, myScreen.h
 homeDir = os.path.expanduser("~\\AppData\\Local\\KeyCount")
 
 keys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
-             'u', 'v',
-             'w', 'x', 'y', 'z', '1', '2', '3', '4', '5',
-             '6', '7', '8', '9', '0', 'enter', 'tab', '`', "'", ';', ',', '.', '/', 'alt', 'ctrl', 'backspace']
+        'u', 'v',
+        'w', 'x', 'y', 'z', '1', '2', '3', '4', '5',
+        '6', '7', '8', '9', '0', 'enter', 'tab', '`', "'", ';', ',', '.', '/', 'alt', 'ctrl', 'backspace']
 count = 0
 
 init()
@@ -70,7 +70,7 @@ def load_files():
     except FileExistsError:
         for file in glob.glob("*.png"):
             shutil.move(file, homeDir)
-
+    os.remove('main.py')
 
 
 load_files()
