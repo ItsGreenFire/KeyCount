@@ -1,5 +1,5 @@
-import os.path
-import random
+import glob
+import shutil
 
 import keyboard
 import win32api
@@ -12,11 +12,12 @@ from screeninfo import get_monitors
 
 myScreen = get_monitors()[0]
 os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (myScreen.width - 300, myScreen.height - 300)
+homeDir = os.path.expanduser("~\\AppData\\Local\\KeyCount")
 
 keys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
              'u', 'v',
              'w', 'x', 'y', 'z', '1', '2', '3', '4', '5',
-             '6', '7', '8', '9', 'enter', 'tab', '`', "'", ';', ',', '.', '/', 'alt', 'ctrl']
+             '6', '7', '8', '9', '0', 'enter', 'tab', '`', "'", ';', ',', '.', '/', 'alt', 'ctrl', 'backspace']
 count = 0
 
 init()
@@ -30,8 +31,8 @@ class App:
 
         self.font = font.Font(None, 60)
 
-        self.bgImg = image.load(os.path.join('bg.png'))
-        self.catImg = image.load(os.path.join('cat0.png'))
+        self.bgImg = image.load(os.path.join(homeDir + '\\bg.png'))
+        self.catImg = image.load(os.path.join(homeDir + '\\cat0.png'))
         self.draw()
 
     def change_cat(self):
@@ -39,7 +40,7 @@ class App:
             tempcount = 0
         else:
             tempcount = 1
-        self.catImg = image.load(os.path.join('cat' + str(tempcount) + '.png'))
+        self.catImg = image.load(os.path.join(homeDir + '\\cat' + str(tempcount) + '.png'))
 
     def draw(self):
         hwnd = display.get_wm_info()["window"]
@@ -49,7 +50,6 @@ class App:
 
         screen.fill('#444444')
 
-        print(len(str(count)))
         if len(str(count)) > 8:
             self.font = font.Font(None, 60 - len(str(count)) * 2)
 
@@ -61,6 +61,19 @@ class App:
         display.flip()
 
 
+def load_files():
+    global homeDir
+    try:
+        os.mkdir(homeDir, 0o777)
+        for file in glob.glob("*.png"):
+            shutil.move(file, homeDir)
+    except FileExistsError:
+        for file in glob.glob("*.png"):
+            shutil.move(file, homeDir)
+
+
+
+load_files()
 app = App()
 
 while True:
@@ -72,7 +85,6 @@ while True:
             count += 1
             app.change_cat()
             app.draw()
-            print(str(count) + keys[key])
             clock.tick(8)
         if key == len(keys):
             key = 0
