@@ -80,6 +80,12 @@ while True:
     for ev in pg.event.get():
         if ev.type == pg.QUIT:
             quit()
+        if ev.type == pg.K_END:
+            quit()
+        if ev.type == pg.K_ESCAPE:
+            quit()
+        if ev.type == pg.K_q:
+            quit()
     for key in range(len(keys)):
         if keyboard.is_pressed(keys[key]):
             count += 1
